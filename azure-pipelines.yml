@@ -28,3 +28,14 @@ steps:
     pip install pytest pytest-azurepipelines
     pytest
   displayName: 'pytest'
+  
+- task: ArchiveFiles@2
+  displayName: Upload Flask app package
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/FlaskApp$(Build.BuildId).zip'
+    replaceExistingArchive: true
+- publish: $(Build.ArtifactStagingDirectory)/FlaskApp$(Build.BuildId).zip
+  artifact: drop
